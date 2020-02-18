@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+  <title>eko</title>
+  <style type="text/css">
+    body {
+      margin: 0; padding: 0;
+      background-color: #789;
+      font: 14px Helvetica, Arial, sans-serif;
+    }
+    #page {
+      width: 600px;
+      margin: 2em auto; padding: 20px 50px;
+      border-radius: 1em;
+      background-color: #fff;
+    }
+    #content {
+      position: relative;
+    }
+    .button {
+      padding: 5px 20px 5px 20px;
+      border-radius: 6px;
+      background: #3498db;
+      color: #ffffff;
+      font-size: 14px;
+      text-decoration: none;
+    }
+    .button:hover {
+      background: #3cb0fd;
+      text-decoration: none;
+    }
+    a:link, a:visited { color: #69c; text-decoration: none; }
+    @media (max-width: 700px) {
+      body { background-color: #fff; }
+      #page {
+        width: auto;
+        margin: 0 auto; padding: 1em;
+        border-radius: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="page">
+    <div id="content">
+      <input type="button" class="button" value="SFX 0" onclick="playsfx0()" />
+      <input type="button" class="button" value="SFX 1" onclick="playsfx1()" />
+      <input type="button" class="button" value="SFX 2" onclick="playsfx2()" />
+      <input type="button" class="button" value="SFX 3" onclick="playsfx3()" />
+      <input type="button" class="button" value="Music" onclick="playmusic0()" />
+      <input type="button" class="button" value="Stop All" onclick="stopall()" />
+      <br />
+      <br />
+      <canvas id="canvas" width="600" height="240" oncontextmenu="event.preventDefault()"
+        onmousedown="window.focus()"></canvas>
+      <br />
+    </div>
+    <p align="center"><a href="https://github.com/paladin-t/eko">eko</a></p>
+  </div>
+  <script src="../src/eko.js"></script>
+  <script src="./waveforms.js"></script>
+  <script type="text/javascript" charset="utf-8">
+    var ctx = Eko.open();
+
+    var tuner = new Eko.Tuner(4, 64, 64);
+
+    var sfx0 = [
+      '-   e',
+      'Bb3 e',
+      'A3  e',
+      'Bb3 e',
+      'G3  e',
+      'A3  e',
+      'F3  e',
+      'G3  e',
+
+      'E3  e',
+      'F3  e',
+      'G3  e',
+      'F3  e',
+      'E3  e',
+      'F3  e',
+      'D3  q',
+
+      '-   e',
+      'Bb3 s',
+      'A3  s',
+      'Bb3 e',
+      'G3  e',
+      'A3  e',
+      'G3  e',
+      'F3  e',
+      'G3  e',
+      'E3  e',
+      'F3  e',
+      'G3  e',
+      'F3  e',
+      'E3  s',
+      'F3  s',
+      'E3  e',
+      'D3  q'
+    ];
+    var sfx1 = [
+      '-   e',
+      'D4  e',
+      'C4  e',
+      'D4  e',
+      'Bb3 e',
+      'C4  e',
+      'A3  e',
+      'Bb3 e',
+
+      'G3  e',
+      'A3  e',
+      'Bb3 e',
+      'A3  e',
+      'G3  e',
+      'A3  e',
+      'F3  q',
+
+      '-   e',
+      'D4  s',
+      'C4  s',
+      'D4  e',
+      'Bb3 e',
+      'C4  e',
+      'Bb3 e',
+      'A3  e',
+      'Bb3 e',
+
+      'G3  e',
+      'A3  e',
+      'Bb3 e',
+      'A3  e',
+      'G3  s',
+      'A3  s',
+      'G3  e',
+      'F3  q'
+    ];
+    var wav2 = Eko.wavSquare;
+    var sfx2 = [
+      {
+        'note': 'D3  q',
+        'waveform': wav2
+      },
+      {
+        'note': '-   h',
+        'waveform': wav2
+      },
+      {
+        'note': 'D3  q',
+        'waveform': wav2
+      },
+
+      {
+        'note': 'A2  q',
+        'waveform': wav2
+      },
+      {
+        'note': '-   h',
+        'waveform': wav2
+      },
+      {
+        'note': 'A2  q',
+        'waveform': wav2
+      },
+
+      {
+        'note': 'Bb2 q',
+        'waveform': wav2
+      },
+      {
+        'note': '-   h',
+        'waveform': wav2
+      },
+      {
+        'note': 'Bb2 q',
+        'waveform': wav2
+      },
+
+      {
+        'note': 'F2  h',
+        'waveform': wav2
+      },
+      {
+        'note': 'A2  h',
+        'waveform': wav2
+      }
+    ];
+    var fx3 = Eko.fxArpFast;
+    var wav3 = Eko.wavOrgan;
+    var sfx3 = [
+      {
+        'note': 'C3  q',
+        'waveform': wav3,
+        'fx': fx3
+      },
+      {
+        'note': 'D3  q',
+        'waveform': wav3,
+        'fx': fx3
+      },
+      {
+        'note': 'E3  q',
+        'waveform': wav3,
+        'fx': fx3
+      },
+      {
+        'note': 'F3  q',
+        'waveform': wav3,
+        'fx': fx3
+      },
+      {
+        'note': 'G3  q',
+        'waveform': wav3,
+        'fx': fx3
+      },
+      {
+        'note': 'A3  q',
+        'waveform': wav3,
+        'fx': fx3
+      },
+      {
+        'note': 'B3  q',
+        'waveform': wav3,
+        'fx': fx3
+      }
+    ];
+    tuner.setSfxPattern(0, sfx0);
+    tuner.setSfxPattern(1, sfx1);
+    tuner.setSfxPattern(2, sfx2);
+    tuner.setSfxPattern(3, sfx3);
+    tuner.setMusicPattern(0, [ 0, 1, 2 ]);
+
+    tuner.setSfxOptions(
+      0,
+      {
+        'loop': [ 0, sfx0.length ],
+        'staccato': 0.55
+      }
+    );
+    tuner.setSfxOptions(
+      1,
+      {
+        'loop': [ 0, sfx1.length ],
+        'staccato': 0.55
+      }
+    );
+    tuner.setSfxOptions(
+      2,
+      {
+        'loop': [ 0, sfx2.length ],
+        'staccato': 0.05,
+        'smoothing': 0.4
+      }
+    );
+    tuner.setSfxOptions(
+      3,
+      {
+        'loop': [ 3, 7 ],
+        'staccato': 0.2
+      }
+    );
+
+    var canvasCtx = document.getElementById('canvas');
+    canvasCtx = canvasCtx.getContext('2d');
+    var WIDTH = 600;
+    var HEIGHT = 240;
+    var analysers = [ ];
+    for (var i = 0; i < 4; ++i) {
+      var analyser = ctx.createAnalyser();
+      analyser.fftSize = 2048;
+      var bufferLength = analyser.frequencyBinCount;
+      var dataArray = new Uint8Array(bufferLength);
+      analyser.getByteTimeDomainData(dataArray);
+      canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
+      analysers.push([ analyser, analyser ]);
+    }
+    var colors = [ 'rgb(255, 0, 0)', 'rgb(0, 255, 0)', 'rgb(0, 0, 255)', 'rgb(38, 38, 38)' ];
+    function draw() {
+      var drawVisual = requestAnimationFrame(draw);
+      canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
+      canvasCtx.fillStyle = 'rgb(200, 200, 200)';
+      canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
+      for (var j = 0; j < analysers.length; ++j) {
+        var analyser = analysers[j][0];
+        analyser.getByteTimeDomainData(dataArray);
+        canvasCtx.lineWidth = 2;
+        canvasCtx.strokeStyle = colors[j];
+        canvasCtx.beginPath();
+        var sliceWidth = WIDTH * 1.0 / bufferLength;
+        var x = 0;
+        for (var i = 0; i < bufferLength; i++) {
+          var v = dataArray[i] / 128.0;
+          var y = v * HEIGHT / 2;
+          if (i === 0) {
+            canvasCtx.moveTo(x, y);
+          } else {
+            canvasCtx.lineTo(x, y);
+          }
+          x += sliceWidth;
+        }
+        canvasCtx.lineTo(canvas.width, canvas.height / 2);
+        canvasCtx.stroke();
+      }
+    }
+    draw();
+
+    function playsfx0() {
+      Eko.D('sfx0');
+      tuner.sfx(
+        0, -1, -1, -1,
+        {
+          'processor': analysers[0]
+        }
+      );
+    }
+    function playsfx1() {
+      Eko.D('sfx1');
+      tuner.sfx(
+        1, -1, -1, -1,
+        {
+          'processor': analysers[1]
+        }
+      );
+    }
+    function playsfx2() {
+      Eko.D('sfx2');
+      tuner.sfx(
+        2, -1, -1, -1,
+        {
+          'processor': analysers[2]
+        }
+      );
+    }
+    function playsfx3() {
+      Eko.D('sfx3');
+      tuner.sfx(
+        3, -1, -1, -1,
+        {
+          'processor': analysers[3]
+        }
+      );
+    }
+    function playmusic0() {
+      Eko.D('music0');
+      tuner.music(
+        0, 0, 2, analysers,
+        {
+          'onAllFinished': function () {
+            Eko.D('Music is finished.');
+          }
+        }
+      );
+    }
+    function stopall() {
+      Eko.D('stop all');
+      tuner.stop(-1);
+    }
+  </script>
+</body>
+</html>
