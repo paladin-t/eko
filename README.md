@@ -5,7 +5,7 @@ A simple, lightweight sfx/music synthesizer in JavaScript based on the Web Audio
 
 ## Get started
 
-See the source code in [./demo/index.html](demo/index.html) for full example, see the [demo](https://paladin-t.github.io/eko/demo/) to run it in browser.
+See the source code in [./demo/index.html](demo/index.html) for full example, see the [demo](https://paladin-t.github.io/eko/demo/index.html) to run it in browser.
 
 Playing a piece of sfx with `eko` is pretty simple:
 
