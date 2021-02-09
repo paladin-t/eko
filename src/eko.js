@@ -74,10 +74,10 @@
   }
 }(this, function (exports) {
 
-	/*
-	** {========================================================
-	** Private stuffs
-	*/
+  /*
+  ** {========================================================
+  ** Private stuffs
+  */
 
   var noteOn = 0;
 
@@ -102,20 +102,20 @@
 
   /* ========================================================} */
 
-	/*
-	** {========================================================
-	** Note class
-	*/
+  /*
+  ** {========================================================
+  ** Note class
+  */
 
-	/**
-	 * Creates a note instance from a string or an object with effects.
-	 *
-	 * @param note - E.g.
-	 *   `new Note('A4 q')` for 440Hz, quarter note;
-	 *   `new Note('- e')` for 0Hz (basically a rest), eigth note;
-	 *   `new Note('A4 es')` for 440Hz, dotted eighth note (eighth + sixteenth);
-	 *   `new Note('A4 0.0125')` for 440Hz, 32nd note (or any arbitrary divisor/multiple of 1 beat).
-	 */
+  /**
+   * Creates a note instance from a string or an object with effects.
+   *
+   * @param note - E.g.
+   *   `new Note('A4 q')` for 440Hz, quarter note;
+   *   `new Note('- e')` for 0Hz (basically a rest), eigth note;
+   *   `new Note('A4 es')` for 440Hz, dotted eighth note (eighth + sixteenth);
+   *   `new Note('A4 0.0125')` for 440Hz, 32nd note (or any arbitrary divisor/multiple of 1 beat).
+   */
   function Note(note) {
     // Unpacks the information.
     var tuple = null;
@@ -142,9 +142,9 @@
     this.waveform = waveform;
   }
 
-	/**
-	 * Converts a note name to a frequency (e.g. 'A4' to 440).
-	 */
+  /**
+   * Converts a note name to a frequency (e.g. 'A4' to 440).
+   */
   Note.getFrequency = function (name) {
     if (name == undefined || name == null)
       name = '-';
@@ -157,11 +157,11 @@
     return freq * Math.pow(2, octaveDiff);
   };
 
-	/**
-	 * Converts a duration string to a number (e.g. 'q' to 1),
-	 * also accepts numeric strings (e.g. '0.125')
-	 * and compund durations (e.g. 'es' for dotted-eight or eighth plus sixteenth).
-	 */
+  /**
+   * Converts a duration string to a number (e.g. 'q' to 1),
+   * also accepts numeric strings (e.g. '0.125')
+   * and compund durations (e.g. 'es' for dotted-eight or eighth plus sixteenth).
+   */
   Note.getDuration = function (symbol) {
     if (symbol == undefined || symbol == null)
       symbol = 'q';
@@ -177,9 +177,9 @@
       );
   };
 
-	/**
-	 * Converts volume string to a float number.
-	 */
+  /**
+   * Converts volume string to a float number.
+   */
   Note.getVolume = function (num) {
     if (num == undefined || num == null)
       num = '1';
@@ -189,14 +189,14 @@
 
   /* ========================================================} */
 
-	/*
-	** {========================================================
-	** Waveform class
-	*/
+  /*
+  ** {========================================================
+  ** Waveform class
+  */
 
-	/**
-	 * Creates a waveform for a single note.
-	 */
+  /**
+   * Creates a waveform for a single note.
+   */
   function Waveform(wav, begin, end) {
     if (typeof wav == 'string') {
       this.type = wav;
@@ -212,9 +212,9 @@
     this.end = end;
   }
 
-	/**
-	 * Affects the oscillator of an audio sequence with a specific waveform or customized periodic wave.
-	 */
+  /**
+   * Affects the oscillator of an audio sequence with a specific waveform or customized periodic wave.
+   */
   Waveform.prototype.affect = function (seq) {
     var waveforms = seq.waveforms;
     if (waveforms.last == this.id)
@@ -237,9 +237,9 @@
     return this;
   };
 
-	/**
-	 * Creates a bunch of waveforms.
-	 */
+  /**
+   * Creates a bunch of waveforms.
+   */
   function Waveforms() {
     this.waveforms = [ ];
     this.updater = null;
@@ -249,18 +249,18 @@
     this.affected = false;
   }
 
-	/**
-	 * Accepts waveform instances, and its absolute begin/end time.
-	 */
+  /**
+   * Accepts waveform instances, and its absolute begin/end time.
+   */
   Waveforms.prototype.push = function (wav, begin, end) {
     this.waveforms.push(wav instanceof Waveform ? wav : new Waveform(wav, begin, end));
 
     return this;
   };
 
-	/**
-	 * Plays a waveform modifier. Not 100% accurate, but yeah...
-	 */
+  /**
+   * Plays a waveform modifier. Not 100% accurate, but yeah...
+   */
   Waveforms.prototype.play = function (seq) {
     if (this.waveforms.length == 0)
       return this;
@@ -309,9 +309,9 @@
     return this;
   };
 
-	/**
-	 * Stops a waveform modifier.
-	 */
+  /**
+   * Stops a waveform modifier.
+   */
   Waveforms.prototype.stop = function () {
     if (this.updater != null) {
       clearInterval(this.updater);
@@ -324,14 +324,14 @@
 
   /* ========================================================} */
 
-	/*
-	** {========================================================
-	** Sequence class
-	*/
+  /*
+  ** {========================================================
+  ** Sequence class
+  */
 
-	/**
-	 * Creates a sequence.
-	 */
+  /**
+   * Creates a sequence.
+   */
   function Sequence(ac, tempo, arr, processor) {
     this.ac = ac || new AudioContext() || new webkitAudioContext();
     this.createFxNodes(processor);
@@ -350,9 +350,9 @@
     this.onFinished = null;
   }
 
-	/**
-	 * Creates gain and EQ nodes, then connect 'em.
-	 */
+  /**
+   * Creates gain and EQ nodes, then connect 'em.
+   */
   Sequence.prototype.createFxNodes = function (processor) {
     var eq = [ [ 'bass', 100 ], [ 'mid', 1000 ], [ 'treble', 2500 ] ],
       prev = this.gain = this.ac.createGain();
@@ -378,9 +378,9 @@
     return this;
   };
 
-	/**
-	 * Accepts note instances or strings (e.g. 'A4 e') or objects with effects.
-	 */
+  /**
+   * Accepts note instances or strings (e.g. 'A4 e') or objects with effects.
+   */
   Sequence.prototype.push = function () {
     Array.prototype.forEach.call(
       arguments,
@@ -392,9 +392,9 @@
     return this;
   };
 
-	/**
-	 * Creates a custom waveform as opposed to 'sawtooth', 'triangle', etc.
-	 */
+  /**
+   * Creates a custom waveform as opposed to 'sawtooth', 'triangle', etc.
+   */
   Sequence.prototype.createCustomWave = function (real, imag) {
     // Allows user to specify only one array and dupe it for imag.
     if (!imag) {
@@ -408,9 +408,9 @@
     this.customWave = [ new Float32Array(real), new Float32Array(imag) ];
   };
 
-	/**
-	 * Recreates the oscillator node (happens on every play).
-	 */
+  /**
+   * Recreates the oscillator node (happens on every play).
+   */
   Sequence.prototype.createOscillator = function () {
     this.stop();
     this.osc = this.ac.createOscillator();
@@ -434,11 +434,11 @@
     return this;
   };
 
-	/**
-	 * Schedules `this.notes[index]` to play at the given time.
-	 *
-	 * @returns An `AudioContext` timestamp of when the note will end.
-	 */
+  /**
+   * Schedules `this.notes[index]` to play at the given time.
+   *
+   * @returns An `AudioContext` timestamp of when the note will end.
+   */
   Sequence.prototype.scheduleNote = function (index, begin, when, init) {
     var duration = 60 / this.tempo * this.notes[index].duration,
       cutoff = duration * (1 - (this.staccato || 0));
@@ -467,24 +467,24 @@
     return when + duration;
   };
 
-	/**
-	 * Gets the next note.
-	 */
+  /**
+   * Gets the next note.
+   */
   Sequence.prototype.getNextNote = function (index) {
     return this.notes[index < this.notes.length - 1 ? index + 1 : 0];
   };
 
-	/**
-	 * How long do we wait before beginning the slide (in seconds).
-	 */
+  /**
+   * How long do we wait before beginning the slide (in seconds).
+   */
   Sequence.prototype.getSlideStartDelay = function (duration) {
     return duration - Math.min(duration, 60 / this.tempo * this.smoothing);
   };
 
-	/**
-	 * Slides the note at `index` into the next note at the given time,
-	 * and applies staccato effect if needed.
-	 */
+  /**
+   * Slides the note at `index` into the next note at the given time,
+   * and applies staccato effect if needed.
+   */
   Sequence.prototype.slide = function (index, when, cutoff) {
     var next = this.getNextNote(index),
       start = this.getSlideStartDelay(cutoff);
@@ -494,9 +494,9 @@
     return this;
   };
 
-	/**
-	 * See PICO-8 for details.
-	 */
+  /**
+   * See PICO-8 for details.
+   */
   Sequence.prototype.arp = function (index, when, delay, striches) {
     var original = this.sliceOriginal || this.notes;
     var idx = this.sliceOffset + index;
@@ -520,9 +520,9 @@
     return this;
   };
 
-	/**
-	 * Applies effects to a note.
-	 */
+  /**
+   * Applies effects to a note.
+   */
   Sequence.prototype.affect = function (index, when, duration, cutoff) {
     var result = true;
     var fx = this.notes[index].fx;
@@ -588,27 +588,27 @@
     return result;
   };
 
-	/**
-	 * Sets the volume at a specific time.
-	 */
+  /**
+   * Sets the volume at a specific time.
+   */
   Sequence.prototype.setVolume = function (vol, when) {
     this.gain.gain.setValueAtTime(vol, when /* to start */);
 
     return this;
   };
 
-	/**
-	 * Sets the frequency at a specific time.
-	 */
+  /**
+   * Sets the frequency at a specific time.
+   */
   Sequence.prototype.setFrequency = function (freq, when) {
     this.osc.frequency.setValueAtTime(freq, when);
 
     return this;
   };
 
-	/**
-	 * Private method to play an audio sequence.
-	 */
+  /**
+   * Private method to play an audio sequence.
+   */
   Sequence.prototype.$play = function (when, init) {
     var now = this.ac.currentTime;
     when = typeof when == 'number' ? when : now;
@@ -645,16 +645,16 @@
     return this;
   };
 
-	/**
-	 * Runs through all notes in the sequence and schedules them.
-	 */
+  /**
+   * Runs through all notes in the sequence and schedules them.
+   */
   Sequence.prototype.play = function (when) {
     return this.$play(when, true);
   };
 
-	/**
-	 * Stops playback, resets the oscillator, cancels parameter automation.
-	 */
+  /**
+   * Stops playback, resets the oscillator, cancels parameter automation.
+   */
   Sequence.prototype.stop = function () {
     if (this.osc) {
       this.osc.onended = null;
@@ -670,14 +670,14 @@
 
   /* ========================================================} */
 
-	/*
-	** {========================================================
-	** Tuner class
-	*/
+  /*
+  ** {========================================================
+  ** Tuner class
+  */
 
-	/**
-	 * Constructs a tuner.
-	 */
+  /**
+   * Constructs a tuner.
+   */
   function Tuner(channels, sfxMaxCount, musicMaxCount) {
     // Gets the context.
     this.context = exports.open();
@@ -702,20 +702,20 @@
     this.MUSIC = 'music';
   }
 
-	/**
-	 * Gets the sfx options at a specific position.
-	 *
-	 * @returns Options object, throws exception for out of bounds accessing.
-	 */
+  /**
+   * Gets the sfx options at a specific position.
+   *
+   * @returns Options object, throws exception for out of bounds accessing.
+   */
   Tuner.prototype.getSfxOptions = function (n) {
     if (n < 0 || n >= this.sfxOptions.length)
       throw new Error('SFX option index out of bounds.');
 
     return this.sfxOptions[n] || { };
   }
-	/**
-	 * Sets the sfx options at a specific position.
-	 */
+  /**
+   * Sets the sfx options at a specific position.
+   */
   Tuner.prototype.setSfxOptions = function (n, options) {
     if (n >= 0 && n < this.sfxOptions.length)
       this.sfxOptions[n] = options;
@@ -725,12 +725,12 @@
     return this;
   }
 
-	/**
-	 * Sets the sfx pattern at a specific position.
-	 *
-	 * @param n - The pattern index to set.
-	 * @param notes - A sequence of playable notes.
-	 */
+  /**
+   * Sets the sfx pattern at a specific position.
+   *
+   * @param n - The pattern index to set.
+   * @param notes - A sequence of playable notes.
+   */
   Tuner.prototype.setSfxPattern = function (n, notes) {
     if (n >= 0 && n < this.sfxPatterns.length)
       this.sfxPatterns[n] = notes;
@@ -740,12 +740,12 @@
     return this;
   }
 
-	/**
-	 * Sets the music pattern at a specific position.
-	 *
-	 * @param n - The pattern index to set.
-	 * @param sfxs - An array of indices (of sfx pattern), can contain `null` holes.
-	 */
+  /**
+   * Sets the music pattern at a specific position.
+   *
+   * @param n - The pattern index to set.
+   * @param sfxs - An array of indices (of sfx pattern), can contain `null` holes.
+   */
   Tuner.prototype.setMusicPattern = function (n, sfxs) {
     if (n >= 0 && n < this.musicPatterns.length)
       this.musicPatterns[n] = sfxs;
@@ -755,11 +755,11 @@
     return this;
   }
 
-	/**
-	 * Stops a specific channel from playing, or stops all.
-	 *
-	 * @param channel - The specific channel to stop, -1 to stop all.
-	 */
+  /**
+   * Stops a specific channel from playing, or stops all.
+   *
+   * @param channel - The specific channel to stop, -1 to stop all.
+   */
   Tuner.prototype.stop = function (channel) {
     var seq = null;
     if (channel == -1) {
@@ -780,17 +780,17 @@
     return this;
   }
 
-	/**
-	 * Plays the sfx `n` on a `channel` from note `offset` for `length` notes.
-	 *
-	 * @param n - -1 to stop the sound on that channel,
-	 *   -2 to release the sound on that channel from looping.
-	 * @param channel - Any music playing on the channel will be halted.
-	 *   -1 (default) to automatically choose a channel that is not being used,
-	 *   -2 to stop the sound from playing on any channel.
-	 * @param offset - The note offset to start from, -1 for the head.
-	 * @param length - The note count to play through, -1 for all.
-	 */
+  /**
+   * Plays the sfx `n` on a `channel` from note `offset` for `length` notes.
+   *
+   * @param n - -1 to stop the sound on that channel,
+   *   -2 to release the sound on that channel from looping.
+   * @param channel - Any music playing on the channel will be halted.
+   *   -1 (default) to automatically choose a channel that is not being used,
+   *   -2 to stop the sound from playing on any channel.
+   * @param offset - The note offset to start from, -1 for the head.
+   * @param length - The note count to play through, -1 for all.
+   */
   Tuner.prototype.sfx = function (n, channel, offset, length, controllers) {
     var seq = null;
     if (channel >= 0 && channel < this.channels.length) seq = this.channels[channel];
@@ -911,16 +911,16 @@
     return this;
   };
 
-	/**
-	 * Plays the music starting from pattern `n`.
-	 *
-	 * @param n - -1 to stop the music.
-	 * @param channelMask - Specifies on which channels to reserve for music only.
-	 *   e.g. to play on the channels 0, 1 and 2, use (1 << 0) | (1 << 1) | (1 << 2) = 7.
-	 *   Reserved channels can still be used to play sound effects, if that
-	 *   channel index is explicitly specified by `sfx()`.
-	 * @param fadeLen - In seconds, -1 for none.
-	 */
+  /**
+   * Plays the music starting from pattern `n`.
+   *
+   * @param n - -1 to stop the music.
+   * @param channelMask - Specifies on which channels to reserve for music only.
+   *   e.g. to play on the channels 0, 1 and 2, use (1 << 0) | (1 << 1) | (1 << 2) = 7.
+   *   Reserved channels can still be used to play sound effects, if that
+   *   channel index is explicitly specified by `sfx()`.
+   * @param fadeLen - In seconds, -1 for none.
+   */
   Tuner.prototype.music = function (n, channelMask, fadeLen, processors, controllers) {
     if (n == -1) {
       for (var i = 0; i < this.channels.length; ++i) {
@@ -994,10 +994,10 @@
 
   /* ========================================================} */
 
-	/*
-	** {========================================================
-	** Exporting
-	*/
+  /*
+  ** {========================================================
+  ** Exporting
+  */
 
   exports.Note = Note;
   exports.Sequence = Sequence;
